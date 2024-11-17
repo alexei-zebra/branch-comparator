@@ -2,6 +2,7 @@
 
 
 from enum import StrEnum, auto
+import requests
 
 
 class Branch(StrEnum):
@@ -17,5 +18,9 @@ class Arch(StrEnum):
     noarch = auto()
 
 
-def get_pckgs(branch:Branch, arch:StrEnum, /) -> dict[str, ]:
-    pass
+def get_pckgs(branch: Branch, arch: StrEnum, /) -> dict[str, str]:
+    responce = requests.get(
+        f"https://rdb.altlinux.org/api/export/branch_binary_packages/{branch.name}",
+        params={"arch": arch.name}
+    )
+    return {i['name']: f"{i['version']}-{i['release']}" for i in responce.json()['packages']}
