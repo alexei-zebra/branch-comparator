@@ -1,0 +1,1 @@
+# Utility for comparing altlinux branches.
