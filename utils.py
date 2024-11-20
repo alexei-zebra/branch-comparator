@@ -32,6 +32,7 @@ def get_pckgs(branch: Branch, arch: StrEnum, /) -> Pckgs:
 
 
 def rpmvercmp(ver1: str, ver2: str) -> int:
+    # this implementation is used because the rpmvercmp algarithm rewritten in python is slow
     return int(sp.run(f"rpmvercmp {ver1} {ver2}", check=True, text=True, shell=True,
                       stdout=sp.PIPE, stderr=sp.PIPE
                       ).stdout)
