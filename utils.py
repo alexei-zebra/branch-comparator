@@ -4,6 +4,8 @@
 from enum import StrEnum, auto
 import requests
 
+import subprocess as sp
+
 
 class Branch(StrEnum):
     sisyphus = auto()
@@ -27,3 +29,9 @@ def get_pckgs(branch: Branch, arch: StrEnum, /) -> Pckgs:
                             params={"arch": arch.name}
                             )
     return {i['name']: f"{i['version']}-{i['release']}" for i in responce.json()['packages']}
+
+
+def rpmvercmp(ver1: str, ver2: str) -> int:
+    return int(sp.run(f"rpmvercmp {ver1} {ver2}", check=True, text=True, shell=True,
+                      stdout=sp.PIPE, stderr=sp.PIPE
+                      ).stdout)
